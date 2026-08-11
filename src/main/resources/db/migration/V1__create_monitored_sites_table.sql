@@ -1,0 +1,7 @@
+CREATE TABLE monitored_sites(
+    id UUID PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    url VARCHAR(255) NOT NULL UNIQUE,
+    enabled BOOLEAN NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL
+);
