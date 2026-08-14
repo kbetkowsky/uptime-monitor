@@ -1,6 +1,8 @@
 package com.kbetkowski.uptimemonitor.service;
 
+import com.kbetkowski.uptimemonitor.dto.SiteUptimeResponse;
 import com.kbetkowski.uptimemonitor.entity.CheckResult;
+import com.kbetkowski.uptimemonitor.entity.CheckStatus;
 import com.kbetkowski.uptimemonitor.entity.MonitoredSite;
 import com.kbetkowski.uptimemonitor.repository.CheckResultRepository;
 import com.kbetkowski.uptimemonitor.repository.MonitoredSiteRepository;
@@ -8,6 +10,8 @@ import com.kbetkowski.uptimemonitor.service.exception.SiteNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,4 +48,13 @@ public class CheckService {
     public List<CheckResult> findRecent() {
         return checkResultRepository.findRecentWithSite();
     }
+
+    public List<SiteUptimeResponse> uptimeLast24h() {
+        Instant since = Instant.now().minus(24, ChronoUnit.HOURS);
+        return checkResultRepository.uptimeStatsSince(since, CheckStatus.UP)
+                .stream()
+                .map(SiteUptimeResponse::from)
+                .toList();
+    }
+
 }

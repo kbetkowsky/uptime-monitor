@@ -1,6 +1,7 @@
 package com.kbetkowski.uptimemonitor.controller;
 
 import com.kbetkowski.uptimemonitor.dto.RecentCheckResponse;
+import com.kbetkowski.uptimemonitor.dto.SiteUptimeResponse;
 import com.kbetkowski.uptimemonitor.service.CheckService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,5 +24,10 @@ public class CheckController {
         List<RecentCheckResponse> sites = checkService.findRecent()
                 .stream().map(RecentCheckResponse::from).toList();
         return ResponseEntity.ok(sites);
+    }
+
+    @GetMapping("/uptime")
+    public List<SiteUptimeResponse> uptime() {
+        return checkService.uptimeLast24h();
     }
 }
