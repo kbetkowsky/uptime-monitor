@@ -40,4 +40,8 @@ public class CheckService {
             log.info("Checked {} - {} ({} ms)", site.getUrl(), result.getStatus(), result.getResponseTimeMs());
         }
     }
+
+    public List<CheckResult> findRecent() {
+        return checkResultRepository.findRecentWithSite();
+    }
 }
