@@ -2,13 +2,15 @@ package com.kbetkowski.uptimemonitor.dto;
 
 import com.kbetkowski.uptimemonitor.repository.SiteUptimeProjection;
 
+import java.io.Serializable;
+
 public record SiteUptimeResponse(
         String siteName,
         String siteUrl,
         long totalChecks,
         long upChecks,
         double uptimePercent
-) {
+) implements Serializable {
     public static SiteUptimeResponse from(SiteUptimeProjection p) {
         double percent = 100.0 * p.getUpChecks() / p.getTotalChecks();
         return new SiteUptimeResponse(

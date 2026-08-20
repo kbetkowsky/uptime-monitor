@@ -8,6 +8,7 @@ import com.kbetkowski.uptimemonitor.repository.CheckResultRepository;
 import com.kbetkowski.uptimemonitor.repository.MonitoredSiteRepository;
 import com.kbetkowski.uptimemonitor.service.exception.SiteNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -49,6 +50,7 @@ public class CheckService {
         return checkResultRepository.findRecentWithSite();
     }
 
+    @Cacheable("siteUpTime")
     public List<SiteUptimeResponse> uptimeLast24h() {
         Instant since = Instant.now().minus(24, ChronoUnit.HOURS);
         return checkResultRepository.uptimeStatsSince(since, CheckStatus.UP)
