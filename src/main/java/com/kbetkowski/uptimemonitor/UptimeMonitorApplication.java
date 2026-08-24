@@ -6,8 +6,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
-@EnableCaching
 public class UptimeMonitorApplication {
 
 	public static void main(String[] args) {
