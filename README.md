@@ -57,7 +57,10 @@ curl http://localhost:8090/checks/uptime
 
 ## Tests
 
+Run docker compose first. One of the tests starts the whole app and it needs the database.
+
 ```
+docker compose up -d
 ./mvnw verify
 ```
 
