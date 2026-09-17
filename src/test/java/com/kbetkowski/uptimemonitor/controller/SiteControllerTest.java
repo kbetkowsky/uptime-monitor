@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,5 +54,16 @@ public class SiteControllerTest {
                 .andExpect(jsonPath("$.url").value("https://test.com"))
                 .andExpect(jsonPath("$.name").value("Test"))
                 .andExpect(jsonPath("$.enabled").value(true));
+    }
+
+    @Test
+    void shouldReturn400WhenUrlIsBad() throws Exception {
+        mockMvc.perform(post("/sites")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {"name": "Test", "url": ""}
+                        """))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }
