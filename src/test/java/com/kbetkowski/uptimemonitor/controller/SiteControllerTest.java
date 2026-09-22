@@ -61,9 +61,10 @@ public class SiteControllerTest {
         mockMvc.perform(post("/sites")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                        {"name": "Test", "url": ""}
+                        {"name": "Test", "url": "not-valid-url"}
                         """))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.url").exists());
     }
 }
