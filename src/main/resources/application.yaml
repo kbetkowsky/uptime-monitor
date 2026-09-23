@@ -1,6 +1,8 @@
 spring:
   application:
     name: uptime-monitor
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
   datasource:
     url: jdbc:postgresql://localhost:5441/uptime_monitor
     username: user
@@ -27,3 +29,4 @@ spring:
 
 server:
   port: 8090
+  shutdown: graceful
