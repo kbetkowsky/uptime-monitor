@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: uptime_monitor
       POSTGRES_USER: user
@@ -17,12 +18,14 @@ services:
 
   redis:
     image: redis:7-alpine
+    restart: unless-stopped
     ports:
       - "127.0.0.1:6380:6379"
 
   app:
     build: .
     stop_grace_period: 30s
+    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
