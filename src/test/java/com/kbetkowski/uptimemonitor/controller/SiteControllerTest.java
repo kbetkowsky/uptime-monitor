@@ -42,6 +42,17 @@ public class SiteControllerTest {
     }
 
     @Test
+    void shouldReturn400WhenUrlIsNotValid() throws Exception {
+        mockMvc.perform(post("/sites")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {"name": "Test", "url": "abc"}
+                        """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.url").exists());
+    }
+
+    @Test
     void shouldReturn201WhenUrlIsCorrect() throws Exception {
         when(siteService.create(any(), any())).thenReturn(new MonitoredSite("Test", "https://test.com"));
 

@@ -1,6 +1,9 @@
 package com.kbetkowski.uptimemonitor.entity;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CheckResultTest {
@@ -34,5 +37,13 @@ class CheckResultTest {
         CheckResult result = new CheckResult(site, null, 5000);
 
         assertEquals(CheckStatus.DOWN, result.getStatus());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"199, DOWN", "200, UP", "399, UP", "400, DOWN", "500, DOWN", ", DOWN"})
+    void shouldResolveStatusAtBoundaries(Integer httpStatus, CheckStatus expectedStatus) {
+        CheckResult result = new CheckResult(site, httpStatus, 100);
+
+        assertEquals(expectedStatus, result.getStatus());
     }
 }
