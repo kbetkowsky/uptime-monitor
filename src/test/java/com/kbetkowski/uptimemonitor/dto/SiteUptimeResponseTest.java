@@ -2,6 +2,9 @@ package com.kbetkowski.uptimemonitor.dto;
 
 import com.kbetkowski.uptimemonitor.repository.SiteUptimeProjection;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SiteUptimeResponseTest {
@@ -45,5 +48,13 @@ public class SiteUptimeResponseTest {
     void shouldCount100PercentUptime() {
         SiteUptimeResponse result = SiteUptimeResponse.from(projection(120, 120));
         assertEquals(100.0, result.uptimePercent(), 0.001);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1, 1, 100.0", "3, 1, 33.33", "3, 2, 66.67", "120, 119, 99.17"})
+    void shouldReturnCorrectPercent(long total, long up, double expectedPercent) {
+        SiteUptimeResponse response = SiteUptimeResponse.from(projection(total, up));
+
+        assertEquals(expectedPercent, response.uptimePercent(), 0.001);
     }
 }
